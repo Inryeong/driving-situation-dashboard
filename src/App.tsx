@@ -6,24 +6,31 @@ import { sampleExperiment } from './data/sampleTrajectory';
 import './App.css';
 
 function App() {
-  const { setExperiment, setCurrentTime, selectedEventId, setSelectedEvent } = usePlaybackStore();
+  const { setExperiment, setCurrentTime, selectedEventId, setSelectedEvent, pause, setTimelineEvents } = usePlaybackStore();
   const [viewMode, setViewMode] = useState<'simulator' | 'ar'>('simulator');
-
-  // 컴포넌트가 마운트될 때 샘플 데이터 로드
-  useEffect(() => {
-    setExperiment(sampleExperiment);
-  }, [setExperiment]);
+  const [cameraMode, setCameraMode] = useState<'follow' | 'free'>('free');
 
   // 타임라인 이벤트 데이터 생성
   const timelineEvents = [
     { id: 'start', time: 0, event: 'Start experiment', details: '33% min. 1/5', type: 'success' },
-    { id: 'obstacle', time: 6000, event: 'Obstacle detected', details: '15 msec', type: 'warning' },
-    { id: 'stop', time: 30000, event: 'Stopped at stop sign', details: '1.3s', type: 'info' },
-    { id: 'speed', time: 50000, event: 'Speed reduced', details: '20 km/h', type: 'failure' }
+    { id: 'obstacle', time: 12000, event: 'Obstacle detected', details: '15 msec', type: 'warning' },
+    { id: 'stop', time: 30000, event: 'Stopped at stop sign', details: '2.0s', type: 'info' },
+    { id: 'speed', time: 50000, event: 'Speed reduced', details: '5.0s', type: 'failure' }
   ];
+
+  // 컴포넌트가 마운트될 때 샘플 데이터와 타임라인 이벤트 로드
+  useEffect(() => {
+    setExperiment(sampleExperiment);
+    setTimelineEvents(timelineEvents);
+    // 초기 모드에 따라 cameraMode 설정
+    setCameraMode(viewMode === 'ar' ? 'follow' : 'free');
+  }, [setExperiment, setTimelineEvents, viewMode]);
 
   // 타임라인 이벤트 클릭 핸들러
   const handleTimelineClick = (eventTime: number, eventId: string) => {
+    // 재생 중이면 일시정지
+    pause();
+    // 시간 설정 및 이벤트 선택
     setCurrentTime(eventTime);
     setSelectedEvent(eventId);
   };
@@ -61,31 +68,41 @@ function App() {
                 <div className="mode-toggle">
                   <button 
                     className={`mode-tab ${viewMode === 'simulator' ? 'active' : ''}`}
-                    onClick={() => setViewMode('simulator')}
-                    title="시뮬레이터 모드"
+                    onClick={() => {
+                      setViewMode('simulator');
+                      setCameraMode('free'); // 시뮬레이터 모드일 때는 Free 모드
+                    }}
+                    title="시뮬레이터 모드 - 자유로운 카메라 컨트롤"
                   >
                     <span className="mode-label">시뮬레이터</span>
                   </button>
                   <button 
                     className={`mode-tab ${viewMode === 'ar' ? 'active' : ''}`}
-                    onClick={() => setViewMode('ar')}
-                    title="AR 모드"
+                    onClick={() => {
+                      setViewMode('ar');
+                      setCameraMode('follow'); // AR 모드일 때는 Follow 모드
+                    }}
+                    title="AR 모드 - 큐브를 따라가는 카메라"
                   >
                     <span className="mode-label">AR</span>
                   </button>
                 </div>
               </div>
               <div className="simulation-container">
-                <Scene3D viewMode={viewMode} />
+                <Scene3D viewMode={viewMode} cameraMode={cameraMode} />
+                {/* AR 모드일 때는 Follow 모드 버튼 표시하지 않음 */}
                 {/* 플로팅 재생 컨트롤 */}
                 <div className="floating-playback-controls">
                   <PlaybackControls />
                 </div>
               </div>
             </section>
+          </div>
 
-            {/* 실험 로그 - 3D VIEW 아래 */}
-            <section className="sidebar-panel experiment-log-main">
+          {/* 사이드바 영역 (우측) - EXPERIMENT LOG 배치 */}
+          <div className="sidebar-area">
+            {/* 실험 로그 */}
+            <section className="sidebar-panel experiment-log-sidebar">
               <h2 className="panel-title">EXPERIMENT LOG</h2>
               <div className="log-summary">
                 <div className="log-item success">
@@ -120,104 +137,6 @@ function App() {
                     </div>
                   );
                 })}
-              </div>
-            </section>
-          </div>
-
-          {/* 사이드바 영역 (우측) */}
-          <div className="sidebar-area">
-            {/* 컨트롤 패널 */}
-            <section className="sidebar-panel">
-              <h2 className="panel-title">CONTROLS</h2>
-              <div className="control-content">
-                <div className="segment-selector">
-                  <span>Scemîment</span>
-                  <span className="arrow">▶</span>
-                </div>
-                
-                <div className="vehicle-stats">
-                  <div className="stat-item">
-                    <span className="stat-label">BATTERY STATS</span>
-                    <div className="stat-value">
-                      <span>92.5%</span>
-                      <div className="progress-bar">
-                        <div className="progress-fill" style={{width: '92.5%'}}></div>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="stat-item">
-                    <span className="stat-label">SPEED</span>
-                    <span className="stat-value">4.5 m/s</span>
-                  </div>
-                  
-                  <div className="stat-item">
-                    <span className="stat-label">TEMPERATURE</span>
-                    <span className="stat-value">35.4°C</span>
-                  </div>
-                </div>
-                
-                <div className="realtime-data">
-                  <h3>REAL-TIME DATA</h3>
-                  <div className="data-grid">
-                    <div className="data-item">
-                      <span className="data-label">LIDAR</span>
-                      <span className="data-value">510.2k</span>
-                    </div>
-                    <div className="data-item">
-                      <span className="data-label">IMAGES</span>
-                      <span className="data-value">29.7</span>
-                    </div>
-                    <div className="data-item">
-                      <span className="data-label">TEXT</span>
-                      <span className="data-value">1.3</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </section>
-
-            {/* 데이터 시각화 */}
-            <section className="sidebar-panel">
-              <h2 className="panel-title">DATA VISUALIZATION</h2>
-              <div className="chart-container">
-                <div className="chart-item">
-                  <h4>Speed</h4>
-                  <div className="wave-chart">
-                    <div className="wave-line"></div>
-                  </div>
-                </div>
-                <div className="chart-item">
-                  <h4>Performance</h4>
-                  <div className="bar-chart">
-                    <div className="bar" style={{height: '60%'}}></div>
-                    <div className="bar" style={{height: '80%'}}></div>
-                    <div className="bar" style={{height: '45%'}}></div>
-                    <div className="bar" style={{height: '90%'}}></div>
-                  </div>
-                </div>
-              </div>
-            </section>
-
-            {/* 성능 지표 */}
-            <section className="sidebar-panel">
-              <h2 className="panel-title">PERFORMANCE</h2>
-              <div className="performance-content">
-                <div className="performance-chart">
-                  <div className="bar-group">
-                    <div className="bar" style={{height: '70%'}}></div>
-                    <div className="bar" style={{height: '85%'}}></div>
-                    <div className="bar" style={{height: '60%'}}></div>
-                  </div>
-                </div>
-                
-                <div className="trajectory-indicator">
-                  <h4>Trajectory</h4>
-                  <div className="trajectory-circle">
-                    <span className="percentage">93%</span>
-                  </div>
-                  <div className="mini-wave"></div>
-                </div>
               </div>
             </section>
           </div>

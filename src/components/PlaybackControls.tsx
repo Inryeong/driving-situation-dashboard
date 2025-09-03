@@ -45,6 +45,7 @@ export const PlaybackControls: React.FC = () => {
   const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newTime = parseFloat(e.target.value);
     setCurrentTime(newTime);
+    // setCurrentTime에서 자동으로 해당 시간에 맞는 이벤트를 선택함
   };
 
   // 배속 변경 핸들러
