@@ -9,7 +9,9 @@
 
 ---
 
-## 핵심 기능
+## 핵심 기능 및 구현 사항
+
+### **프론트엔드 개발자이자 디자이너로서의 기여**
 
 #### **3D 주행 시뮬레이션 뷰**
 - **GPS 로그(JSON)와 CAN 데이터 기반**: 차량 속도와 위치 정보를 받아 3D 환경에서 주행 궤적 시각화
@@ -17,7 +19,7 @@
 - **자유로운 카메라 조작**: 전체 주행 경로를 다양한 각도에서 분석 가능
 
 #### **성능 최적화된 데이터 렌더링**
-- **useMemo와 이진 탐색 적용**: 대용량 주행 경로 데이터 렌더링 성능 개선
+- **useMemo와 이진 탐색 적용**: 다수 포인트의 주행 경로 데이터 렌더링 성능 개선
 - **InstancedMesh 활용**: 보행자·차선 이탈 등 다양한 주행 상황별 이벤트 시각화 성능 최적화
 - **60fps 기준 렌더링**: 부드러운 차량 애니메이션 및 궤적 시각화
 
@@ -35,6 +37,23 @@
 
 ---
 
+## 이력서 참고사항
+
+### **핵심 기술 구현**
+- **GPS 로그(JSON)와 CAN(차량 속도) 데이터를 받아 3D 환경에서 주행 궤적을 시각화**
+- **useMemo와 이진 탐색을 적용해 대용량 주행 경로 데이터 렌더링 성능 개선**
+- **R3F 사용한 Scene·Vehicle·TrajectoryPath 등 주요 오브젝트 컴포넌트화**
+- **타임라인 스크럽/클릭으로 특정 시점 이동이 가능한 시뮬레이터 컨트롤러 UI 개발**
+- **InstancedMesh를 적용해 보행자·차선 이탈 등 다양한 주행 상황별 이벤트 시각화 성능 최적화**
+
+### **UI/UX 디자인 및 개발**
+- **직관적인 3D 시각화**: 복잡한 주행 데이터를 직관적으로 이해할 수 있는 3D 인터페이스 설계
+- **반응형 웹 디자인**: 다양한 디바이스에서 최적화된 사용자 경험 제공
+- **인터랙티브 컨트롤**: 사용자가 쉽게 조작할 수 있는 직관적인 컨트롤러 UI 설계
+- **성능 중심 설계**: 60fps 기준의 부드러운 애니메이션과 반응성을 고려한 UI/UX 구현
+
+---
+
 ## 기술 스택
 
 <div align="center">
@@ -44,10 +63,6 @@
 ![React](https://img.shields.io/badge/React-19.1.1-61DAFB?style=for-the-badge&logo=react&logoColor=black)
 ![Three.js](https://img.shields.io/badge/Three.js-0.179.1-000000?style=for-the-badge&logo=three.js&logoColor=white)
 ![React Three Fiber](https://img.shields.io/badge/React%20Three%20Fiber-000000?style=for-the-badge&logo=three.js&logoColor=white)
-
-![Unity](https://img.shields.io/badge/Unity-000000?style=for-the-badge&logo=unity&logoColor=white)
-![C#](https://img.shields.io/badge/C%23-239120?style=for-the-badge&logo=c-sharp&logoColor=white)
-![Figma](https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white)
 
 </div>
 
@@ -73,6 +88,22 @@
 - **사용자 경험**: 복잡한 데이터를 직관적으로 이해 가능
 - **성능 향상**: 대용량 주행 경로 데이터의 효율적인 렌더링
 - **개발 효율성**: 모듈화된 구조로 유지보수성 향상
+
+### **배운점**
+#### **기술적 성장**
+- **3D 웹 개발**: Three.js와 React Three Fiber를 활용한 고성능 3D 애플리케이션 개발 경험
+- **성능 최적화**: useMemo, 이진 탐색, InstancedMesh 등을 활용한 렌더링 성능 최적화 기법 습득
+- **대용량 데이터 처리**: 수천 개의 데이터 포인트를 효율적으로 렌더링하는 방법론 이해
+
+#### **UI/UX 디자인 인사이트**
+- **데이터 시각화**: 복잡한 기술 데이터를 직관적으로 표현하는 시각적 설계의 중요성
+- **사용자 중심 설계**: 기술적 기능성과 사용자 경험의 균형을 맞추는 디자인 철학
+- **인터랙티브 요소**: 사용자가 능동적으로 데이터를 탐색할 수 있는 인터페이스 설계의 가치
+
+#### **개발 프로세스 개선**
+- **컴포넌트 아키텍처**: 재사용 가능하고 유지보수하기 쉬운 모듈화된 구조 설계의 중요성
+- **성능 중심 개발**: 사용자 경험을 위한 성능 최적화의 지속적인 고려 필요성
+- **기술 스택 선택**: 프로젝트 요구사항에 맞는 적절한 기술 스택 선택의 중요성
 
 ---
 
