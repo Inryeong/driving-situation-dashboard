@@ -48,7 +48,7 @@ function App() {
       {/* 헤더 */}
       <header className="app-header">
         <div className="header-left">
-          <h1 className="project-title">LiveWindow AR Studio</h1>
+          <h1 className="project-title">Driving Situation Dashboard</h1>
         </div>
         
         <div className="header-right">

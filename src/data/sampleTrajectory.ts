@@ -115,6 +115,7 @@ export const createSampleTrajectory = (): ExperimentData => {
             currentX += Math.cos(currentHeading) * currentSpeed * 0.05; // 속도 감소: 0.1 → 0.05
             currentZ += Math.sin(currentHeading) * currentSpeed * 0.05; // 속도 감소: 0.1 → 0.05
           }
+          break;
           
         case 'speed_reduction':
           // 속도 감소 구간: 점진적 감속하면서 천천히 이동

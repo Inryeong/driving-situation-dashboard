@@ -4,7 +4,7 @@ import { OrbitControls, Grid } from '@react-three/drei';
 import { Vehicle3D } from './Vehicle3D';
 import { TrajectoryPath } from './TrajectoryPath';
 import { usePlaybackStore } from '../stores/playbackStore';
-import * as THREE from 'three';
+
 
 interface Scene3DProps {
   viewMode: 'simulator' | 'ar';
