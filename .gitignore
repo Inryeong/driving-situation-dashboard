@@ -112,3 +112,21 @@ Thumbs.db
 .cache/
 .parcel-cache/
 .vercel
+
+# Cursor IDE
+.cursor/
+.cursorrules
+.cursorrules.json
+cursorrules
+cursorrules.json
+
+# Global MDC files
+global.mdc
+*.mdc
+
+# Editor specific files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
